@@ -94,3 +94,9 @@ ul.attributes-list {
     margin-bottom: 1rem;
   }
 }
+
+/* for graph search control on graph when left panel is hidden */
+.graph-search {
+  z-index: 200;
+  width: 20rem;
+}

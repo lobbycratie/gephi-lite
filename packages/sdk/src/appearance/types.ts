@@ -127,6 +127,19 @@ export interface AppearanceState {
   edgesZIndex: ZIndexAttr;
 }
 
+/**
+ * Custom appaerance
+ */
+export interface CustomAppearanceState {
+  restrictedNavigation: boolean;
+  hideTopPanel: boolean;
+  hideLeftPanel: boolean;
+  rightPanelWidth: string;
+  hideItemAttributes: boolean;
+  hiddenNodeAttributes: string[];
+  hiddenEdgeAttributes: string[];
+}
+
 export const APPEARANCE_ITEM_TYPES: Record<keyof AppearanceState, ItemType | null> = {
   backgroundColor: null,
   layoutGridColor: null,

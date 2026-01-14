@@ -32,6 +32,11 @@ import { GridController } from "./controllers/GridController";
 import { SelectionController } from "./controllers/SelectionController";
 import { SettingsController } from "./controllers/SettingsController";
 
+import { getCustomAppearanceState } from "@gephi/gephi-lite-sdk";
+import { GraphSearchSelection } from "../../components/GraphSearchSelection";
+
+const customAppearance = getCustomAppearanceState();
+
 function useFullScreen(): { toggle: () => void; isFullScreen: boolean } {
   const [isFullScreen, setFullScreen] = useState<boolean>(false);
   const container = document.body;
@@ -183,6 +188,8 @@ export const GraphRendering: FC = () => {
         </div>
         <InteractionsController />
         <GraphCaptionLayer />
+        {/* display search selection control if left panel is hidden */}
+        {customAppearance.hideLeftPanel && (<GraphSearchSelection className="graph-search" />)}
       </SigmaContainer>
     </>
   );

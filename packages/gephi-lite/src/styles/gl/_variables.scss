@@ -33,6 +33,8 @@ $gl-ref-dimension-linear-600: calc($gl-ref-dimension-base * 6);
 $gl-ref-dimension-linear-800: calc($gl-ref-dimension-base * 8);
 $gl-ref-dimension-linear-1600: calc($gl-ref-dimension-base * 16);
 $gl-ref-dimension-linear-3200: calc($gl-ref-dimension-base * 32);
+/* Default right panel width */
+$gl-ref-dimension-linear-5000: calc($gl-ref-dimension-base * 50);
 
 // Border Radius
 $gl-ref-radius-4: 0.25rem;
@@ -217,6 +219,8 @@ $colors-dark: (
 );
 
 :root {
+  /* css variable for right panel width */
+  --panel-width-right: #{$gl-ref-dimension-linear-5000};
   @each $name, $value in $colors-light {
     --gl-#{$name}: #{$value};
     --gl-#{$name}-rgb: #{hexToRGBString($value)};

@@ -35,6 +35,11 @@ import { Selection } from "./Selection";
 import { LabelsPanel } from "./panels/LabelsPanel";
 import { MetricsPanel } from "./panels/MetricsPanel";
 import { LayoutPanel } from "./panels/layouts/LayoutPanel";
+import { CSSProperties } from "react";
+
+import { getCustomAppearanceState } from "@gephi/gephi-lite-sdk";
+
+const customAppearance = getCustomAppearanceState();
 
 const MENU: MenuItem<{ panel?: ComponentType }>[] = [
   {
@@ -119,7 +124,7 @@ export const GraphPage: FC = () => {
   const [expanded, setExpanded] = useState(false);
 
   const selectionPanel = (
-    <div className={cx("panel panel-right panel-expandable panel-selection", items.size > 0 && "deployed")}>
+    <div className={cx("panel panel-right panel-expandable-right panel-selection", items.size > 0 && "deployed")} style={{ "--panel-width-right": customAppearance.rightPanelWidth } as CSSProperties}>
       <button
         type="button"
         className="gl-btn-close gl-btn d-none d-sm-block"
@@ -160,7 +165,7 @@ export const GraphPage: FC = () => {
       </Header>
       <Layout id="graph-page" className="panels-layout">
         {/* Menu panel on left*/}
-        <div className={cx("panel panel-left panel-main", (!expanded || !!selectedTool) && "panel-collapsed")}>
+        <div className={customAppearance.hideLeftPanel ? "panel-left-hidden" : cx("panel panel-left panel-main", (!expanded || !!selectedTool) && "panel-collapsed")}>
           <div className="panel-body">
             <GraphSummary />
             <GraphSearchSelection />

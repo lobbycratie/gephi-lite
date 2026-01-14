@@ -143,3 +143,32 @@ server {
 ```
 
 PS: On this configuration you should change the `server_name` with its ssl configuration, as well as the `add_header Access-Control-Allow-Origin` value.
+
+
+
+# Fork's modifications
+Hide some features or elements for better readability (especially for other web site integration)
+- Node labels always displayed (change default value)
+- Larger right panel
+- Better readability for long attribute values (display carriage returns) in right panel
+- Hide some node and edge attributes in right panel for better readability 
+- Hide left and / or Top panels
+
+## Url query parameters:
+Sample uri: http://localhost:5173/gephi-lite/?hp=left&rn=true&rpw=25rem
+
+### Hide left and top panels:  
+``hp="top"|"left"|"all"|"none"``  
+If left panel is hidden, search box located on graph top left corner (default: none)
+
+### Restricted navigation:  
+``rn="true"|"false"``  
+If top panel is not hidden, hide Workspace management and Home modale menus (default: false)  
+
+### Custom right panel width:  
+``rpw=XXrem``  
+(default: 25rem)  
+
+
+
+

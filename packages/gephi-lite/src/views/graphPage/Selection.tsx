@@ -1,4 +1,5 @@
 import { DEFAULT_NODE_COLOR, FieldModel, NodeCoordinates, Scalar, StaticDynamicItemData } from "@gephi/gephi-lite-sdk";
+import { getCustomAppearanceState } from "@gephi/gephi-lite-sdk";
 import { groupBy, isNil, toPairs, values } from "lodash";
 import { FC, ReactNode, useEffect, useMemo, useState } from "react";
 import AnimateHeight from "react-animate-height";
@@ -72,7 +73,8 @@ function SelectedItem<
   const filteredGraph = useFilteredGraph();
   const { deleteItems } = useGraphDatasetActions();
   const { select, unselect } = useSelectionActions();
-
+  const customAppearance = getCustomAppearanceState();
+  
   const attributes = useMemo<{ label: ReactNode; value: Scalar; field?: FieldModel }[]>(
     () => [
       { label: t(`graph.model.${type}-data.id`), value: id },
@@ -94,11 +96,16 @@ function SelectedItem<
     ],
     [data.dynamic, data.static, fields, id, renderingData, t, type],
   );
+  
+  let filteredAttributes = attributes;
 
   const item = getItemAttributes(type, id, filteredGraph, data, graphDataset, visualGetters);
   let content: ReactNode;
   if (type === "nodes") {
     content = <NodeComponent label={item.label} color={item.color} hidden={item.hidden} />;
+    if (customAppearance.hideItemAttributes) {
+      filteredAttributes = attributes.filter(item => item.field && !customAppearance.hiddenNodeAttributes.includes(item.field.id));
+    }
   } else {
     //if edge is filtered out, use nodeData to compute rendering data and not sigmaGraph
     const mergedStaticDynamicNodeData =
@@ -135,6 +142,9 @@ function SelectedItem<
         className="mb-2"
       />
     );
+    if (customAppearance.hideItemAttributes) {
+      filteredAttributes = attributes.filter(item => item.field && !customAppearance.hiddenEdgeAttributes.includes(item.field.id));
+    }
   }
 
   useEffect(() => {
@@ -212,7 +222,7 @@ function SelectedItem<
       </h4>
       <AnimateHeight height={expanded ? "auto" : 0} className="position-relative" duration={400}>
         <ul className="attributes-list list-unstyled small">
-          {attributes.map((attribute, i) => (
+          {filteredAttributes.map((attribute, i) => (
             <li
               key={i}
               className="overflow-hidden  gl-py-2 d-flex flex-column  flex-wrap align-items-start gl-gap-x-2 gl-gap-y-1 "
@@ -252,6 +262,8 @@ export const Selection: FC = () => {
   const { dynamicNodeData, dynamicEdgeData } = useDynamicItemData();
   const { nodeData, edgeData, layout } = useGraphDataset();
 
+  const customAppearance = getCustomAppearanceState();
+
   const mergedStaticDynamicItemData = useMemo(() => {
     return mergeStaticDynamicData(
       type === "nodes" ? nodeData : edgeData,
@@ -268,7 +280,7 @@ export const Selection: FC = () => {
   return (
     <>
       {/* Selection main list */}
-      <div className="panel-body gap-1">
+      <div className="panel-body-right gap-1" >
         {!!hidden.length && (
           <div>
             <Trans i18nKey={`selection.visible_${type}`} count={visible.length} />
@@ -323,6 +335,7 @@ export const Selection: FC = () => {
       {/* Selection actions */}
       <div className="panel-footer">
         <div className="gl-actions flex-row-reverse flex-sm-row justify-content-sm-start">
+          {!customAppearance.hideTopPanel && (
           <button
             className="gl-btn gl-btn-icon gl-btn-fill"
             onClick={() => {
@@ -332,6 +345,7 @@ export const Selection: FC = () => {
           >
             {t("selection.open_in_data")}
           </button>
+          )}
           <button
             className="gl-btn gl-btn-icon gl-btn-outline"
             onClick={() =>

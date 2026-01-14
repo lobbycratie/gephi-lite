@@ -33,6 +33,10 @@ import { useModal } from "../../core/modals";
 import { useNotifications } from "../../core/notifications";
 import { useConnectedUser } from "../../core/user";
 
+import { getCustomAppearanceState } from "@gephi/gephi-lite-sdk";
+
+const customAppearance = getCustomAppearanceState();
+
 export const Header: FC<PropsWithChildren> = ({ children }) => {
   const location = useLocation();
   const { t } = useTranslation();
@@ -172,7 +176,7 @@ export const Header: FC<PropsWithChildren> = ({ children }) => {
   );
 
   return (
-    <header className="gl-container-high-bg container-fluid border-bottom">
+    <header className={customAppearance.hideTopPanel ? "panel-top-hidden" : "gl-container-high-bg container-fluid border-bottom"}>
       <AnimateHeight height={expanded ? "auto" : 0} className="position-relative d-sm-none" duration={400}>
         <div className="d-flex flex-column align-items-stretch">
           <section className="d-flex flex-row">
@@ -200,12 +204,12 @@ export const Header: FC<PropsWithChildren> = ({ children }) => {
 
       <section className="row gx-0">
         <div className="col-2 col-sm-4 d-flex justify-content-start align-items-center">
-          {/* Tablet and desktop display: */}
+        {!customAppearance.restrictedNavigation && (
           <Dropdown options={workspaceMenuList} className="d-none d-sm-block">
             <button className="gl-btn dropdown-toggle">Workspace</button>
           </Dropdown>
-          {/* Mobile display: */}
-          {children}
+        )}
+        {!customAppearance.restrictedNavigation && children}
         </div>
         <div className="col-8 col-sm-4 d-flex justify-content-center align-items-center gl-gap-1">
           <Link to="/" className={cx("gl-btn", location.pathname === "/" && "gl-btn-fill")}>
@@ -223,11 +227,13 @@ export const Header: FC<PropsWithChildren> = ({ children }) => {
           <div className="d-none d-sm-flex">
             <ThemeSwitcher />
             <LocalSwitcher />
+            {!customAppearance.restrictedNavigation && (
             <Dropdown options={logoMenuList} side="right">
               <button className="gl-btn dropdown-toggle">
                 <GephiLogo height="1em" width="1em" />
               </button>
             </Dropdown>
+            )}
           </div>
           {/* Mobile display: */}
           <button className="gl-btn gl-btn-icon d-sm-none" onClick={() => setExpanded((v) => !v)}>
