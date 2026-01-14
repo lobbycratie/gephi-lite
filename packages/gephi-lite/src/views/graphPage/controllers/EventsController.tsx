@@ -17,6 +17,10 @@ import { bindUpHandler } from "../../../utils/events";
 
 const DRAG_EVENTS_TOLERANCE = 3;
 
+// Change node selection behavior:
+// If node is selected, don't reset hovered effect after leave the node
+let nodeSelected = false;
+
 export const EventsController: FC = () => {
   const sigma: GephiLiteSigma = useSigma();
   const registerEvents = useRegisterEvents();
@@ -52,27 +56,35 @@ export const EventsController: FC = () => {
       },
       enterNode({ node }) {
         if (dragStateRef.current.type !== "idle") return;
-        setHoveredNode(node);
+        if (!nodeSelected) setHoveredNode(node);
       },
       leaveNode() {
         if (dragStateRef.current.type !== "idle") return;
-        resetHoveredNode();
+        if (!nodeSelected) resetHoveredNode();
       },
       clickNode({ node, event }) {
         if (dragEventsCountRef.current >= DRAG_EVENTS_TOLERANCE) return;
 
         if (event.original.ctrlKey) {
+          nodeSelected = !nodeSelected;
           toggle({
             type: "nodes",
             item: node,
           });
         } else if (selection.type === "nodes" && selection.items.has(node) && selection.items.size === 1) {
+          nodeSelected = false;
           emptySelection();
         } else {
+          nodeSelected = true;
           select({ type: "nodes", items: new Set([node]), replace: true });
+          setHoveredNode(node);
         }
       },
       clickEdge({ edge, event }) {
+        if (nodeSelected) {
+          nodeSelected = false;
+          resetHoveredNode();
+        }
         if (event.original.ctrlKey) {
           toggle({
             type: "edges",
@@ -85,6 +97,10 @@ export const EventsController: FC = () => {
         }
       },
       doubleClick(event: MouseCoords) {
+        if (nodeSelected) {
+          nodeSelected = false;
+          resetHoveredNode();
+        }
         event.preventSigmaDefault();
       },
       downNode: ({ node, event }) => {
@@ -111,7 +127,11 @@ export const EventsController: FC = () => {
         // Reset the selection when clicking on the stage
         // except when ctrl is pressed to add node in selection
         // with the marquee selector
-        if (!e.event.original.ctrlKey) emptySelection();
+        if (!e.event.original.ctrlKey) {
+          nodeSelected = false;
+          resetHoveredNode();
+          emptySelection();
+        }
       },
       moveBody: (e) => {
         const dragState = dragStateRef.current;
