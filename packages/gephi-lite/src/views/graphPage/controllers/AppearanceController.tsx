@@ -2,6 +2,8 @@ import {
   CustomEdgeDisplayData,
   CustomNodeDisplayData,
   DEFAULT_EDGE_COLOR,
+  DEFAULT_HOVERED_EDGE_COLOR,
+  DEFAULT_HOVERED_EDGE_SIZE_COEF,
   DEFAULT_EDGE_SIZE,
   DEFAULT_NODE_COLOR,
   DEFAULT_NODE_SIZE,
@@ -26,13 +28,13 @@ export const AppearanceController: FC = () => {
   const { showEdges } = useAppearance();
   const { fullGraph } = useGraphDataset();
   const { theme } = usePreferences();
-  const { emphasizedNodes, emphasizedEdges, hoveredNode, highlightedNodes } = useSigmaState();
+  const { emphasizedNodes, emphasizedEdges, hoveredNode, hoveredEdge, highlightedNodes } = useSigmaState();
 
   // Reducers:
   useEffect(() => {
     const graph = sigma.getGraph();
     const mode = getAppliedTheme(theme);
-
+    
     // what we've got in the state,
     //  or
     //    the node selection,
@@ -42,6 +44,7 @@ export const AppearanceController: FC = () => {
       new Set([
         ...(selection.type === "nodes" ? Array.from(selection.items) : []),
         ...(hoveredNode ? [hoveredNode, ...graph.neighbors(hoveredNode)] : []),
+        ...(hoveredEdge ? graph.extremities(hoveredEdge) : []),
       ]);
 
     // What we've got in state
@@ -110,6 +113,12 @@ export const AppearanceController: FC = () => {
               res.zIndex = -1;
             }
 
+            if (id == hoveredEdge && (selection.type !== "nodes" || selection.items.size === 0) ) {
+              res.color = DEFAULT_HOVERED_EDGE_COLOR;
+              res.size = res.size ? DEFAULT_HOVERED_EDGE_SIZE_COEF * res.size: res.size;
+              res.zIndex = 1000;
+            }
+
             return res;
           },
     );
@@ -117,6 +126,7 @@ export const AppearanceController: FC = () => {
     emphasizedEdges,
     emphasizedNodes,
     hoveredNode,
+    hoveredEdge,
     selection,
     showEdges,
     sigma,
