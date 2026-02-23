@@ -1,18 +1,19 @@
 /**
- * Function that return coordinates for the specified node.
- *
- * @param {string} id The ID of the node
- * @param {Object.<string, number | string | boolean | undefined | null>} attributes Attributes of the node
- * @param {number} index The index position of the node in the graph
- * @param {Graph} graph The graphology instance (documentation: https://graphology.github.io/ )
- * @returns {x: number, y: number} The computed coordinates of the node
- */
+* Function that return coordinates for the specified node.
+*
+* @param {string} id The ID of the node
+* @param {Object.<string, number | string | boolean | undefined | null>} attributes Attributes of the node
+* @param {number} index The index position of the node in the graph
+* @param {Graph} graph The graphology instance (documentation: https://graphology.github.io/ )
+* @returns {x: number, y: number} The computed coordinates of the node
+*/
 function nodeCoordinates(id, attributes, index, graph) {
+
   // / Your code goes here
-  function computeCoords(i, r, nb, xoffset, yoffset) {
+  function computeCoords(i, r, nb, xoffset, yoffset, a, b) {
     var tau = Math.PI * 2;
-    var x = r * Math.cos((i * tau) / nb) + xoffset;
-    var y = r * Math.sin((i * tau) / nb) + yoffset;
+    var x = a * r * Math.cos((i * tau) / nb) + xoffset;
+    var y = b * r * Math.sin((i * tau) / nb) + yoffset;
     return { x: x, y: y };
   }
 
@@ -24,10 +25,12 @@ function nodeCoordinates(id, attributes, index, graph) {
   }
 
   // Parameters :
+  var a = 1;
+  var b = 1;
   var cx = 0;
   var cy = 0;
-  var rayon1 = 500; /* rayon du cercle des Pathologies */
-  var rayon2 = 800; /* rayon du cercle des Victimes */
+  var rayon1 = 250; /* rayon du cercle des Pathologies */
+  var rayon2 = 600; /* rayon du cercle des Victimes */
   var centerNodeId = "A0";
 
   if (index == 0) {
@@ -48,6 +51,7 @@ function nodeCoordinates(id, attributes, index, graph) {
     nb = this.staticVars.nodesCount1;
     this.staticVars.index1++;
     i = this.staticVars.index1;
+    a = 1;  // a = 0.7 for ellipse
   } else {
     rayon = rayon2;
     nb = this.staticVars.nodesCount2;
@@ -55,6 +59,5 @@ function nodeCoordinates(id, attributes, index, graph) {
     i = this.staticVars.index2;
   }
 
-  return computeCoords(i, rayon, nb, cx, cy);
-
+  return computeCoords(i, rayon, nb, cx, cy, a, b);
 }
