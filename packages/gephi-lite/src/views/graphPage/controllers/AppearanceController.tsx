@@ -44,7 +44,7 @@ export const AppearanceController: FC = () => {
       new Set([
         ...(selection.type === "nodes" ? Array.from(selection.items) : []),
         ...(hoveredNode ? [hoveredNode, ...graph.neighbors(hoveredNode)] : []),
-        ...(hoveredEdge ? graph.extremities(hoveredEdge) : []),
+        //...(hoveredEdge ? graph.extremities(hoveredEdge) : []),
       ]);
 
     // What we've got in state
@@ -113,7 +113,7 @@ export const AppearanceController: FC = () => {
               res.zIndex = -1;
             }
 
-            if (id == hoveredEdge && (selection.type !== "nodes" || selection.items.size === 0) ) {
+            if (id == hoveredEdge /* && (selection.type !== "nodes" || selection.items.size === 0) */ ) {
               res.color = DEFAULT_HOVERED_EDGE_COLOR;
               res.size = res.size ? DEFAULT_HOVERED_EDGE_SIZE_COEF * res.size: res.size;
               res.zIndex = 1000;

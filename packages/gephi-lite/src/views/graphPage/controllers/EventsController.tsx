@@ -66,7 +66,11 @@ export const EventsController: FC = () => {
         if (dragEventsCountRef.current >= DRAG_EVENTS_TOLERANCE) return;
 
         if (event.original.ctrlKey) {
-          nodeSelected = !nodeSelected;
+          if (selection.type === "nodes" && selection.items.has(node) && selection.items.size === 1) {
+            nodeSelected = !nodeSelected;
+          } else {
+            nodeSelected = true;
+          }
           toggle({
             type: "nodes",
             item: node,
@@ -172,8 +176,10 @@ export const EventsController: FC = () => {
           );
           setNodePositions(positions);
 
-          resetHoveredNode();
-          resetHoveredEdge();
+          if (!nodeSelected) {
+            resetHoveredNode();
+            resetHoveredEdge();
+          }
         }
         // I think the fixed  attribute is a failed tryout to solve the drag during layout issue https://github.com/gephi/gephi-lite/issues/138
         graph.forEachNode((node) => graph.setNodeAttribute(node, "fixed", false));
