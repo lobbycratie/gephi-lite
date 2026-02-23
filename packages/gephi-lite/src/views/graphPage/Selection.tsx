@@ -98,6 +98,10 @@ function SelectedItem<
   );
   
   let filteredAttributes = attributes;
+  let imageSrc;
+  if (type === "nodes") {
+    imageSrc = attributes.filter(item => item.field?.id === 'image')[0].value?.toString();
+  }
 
   const item = getItemAttributes(type, id, filteredGraph, data, graphDataset, visualGetters);
   let content: ReactNode;
@@ -221,6 +225,28 @@ function SelectedItem<
         </Dropdown>
       </h4>
       <AnimateHeight height={expanded ? "auto" : 0} className="position-relative" duration={400}>
+        {type === "nodes" && imageSrc && (
+        <div className="right-panel-thumbnail"><img src={imageSrc}></img></div>
+        )}
+        <div className="gl-actions flex-row-reverse flex-sm-row right-panel-buttons">
+        {type === "nodes" && (
+        <button
+          className="gl-btn gl-btn-icon gl-btn-outline"
+          onClick={() => {
+            select({ type, items: new Set(filteredGraph.neighbors(id)), replace: false });
+          }} >
+          {t("Noeuds liés")}
+        </button>
+        )}
+        <button
+          className="gl-btn gl-btn-icon gl-btn-outline"
+          onClick={() => {
+            if (type === "nodes") focusCameraOnNode(id);
+            else focusCameraOnEdge(id);
+          }} >
+          {t("Localiser")}
+        </button>
+        </div>
         <ul className="attributes-list list-unstyled small">
           {filteredAttributes.map((attribute, i) => (
             <li

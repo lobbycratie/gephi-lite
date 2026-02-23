@@ -132,6 +132,7 @@ $panel-width: $gl-sys-size-container-large;
 /* Display line break in node / edge attributes value */
 .text-break {
   white-space: pre-line;
+  line-height: 1.5;
 }
 
 /* hide left panel */
@@ -142,6 +143,33 @@ $panel-width: $gl-sys-size-container-large;
 /* hide top panel */
 .panel-top-hidden {
   display: none;
+}
+
+.right-panel-thumbnail {
+	margin-left: 1rem;
+	margin-top: 1rem;
+	margin-bottom: 1rem;
+	width: 92%;
+	height: same-as-width;
+	background-color: white;
+  float: left;
+	overflow: hidden;
+}
+
+.right-panel-thumbnail img {
+	max-width: 100%;
+  min-width: 100%;
+	max-height: same-as-width;
+	border:0;
+}
+
+.right-panel-buttons {
+  display: flex;
+  justify-content: space-between;
+	width:92%;
+	margin-left:1rem;
+	margin-top:1rem;
+  margin-bottom: 0.5rem;
 }
 
 // Mobile display:
