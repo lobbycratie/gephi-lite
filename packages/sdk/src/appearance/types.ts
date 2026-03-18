@@ -131,6 +131,7 @@ export interface AppearanceState {
  * Custom appaerance
  */
 export interface CustomAppearanceState {
+  hideCaptionLayer: boolean;
   restrictedNavigation: boolean;
   hideTopPanel: boolean;
   hideLeftPanel: boolean;

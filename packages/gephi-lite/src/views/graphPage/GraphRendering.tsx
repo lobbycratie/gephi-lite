@@ -125,7 +125,7 @@ const InteractionsController: FC = () => {
 const GraphCaptionLayer: FC = () => {
   return (
     <div className="position-absolute sigma-controls" style={{ left: 10, bottom: 10, marginRight: "4em" }}>
-      <GraphCaption minimal />
+      {!customAppearance.hideCaptionLayer && (<GraphCaption minimal />)}
     </div>
   );
 };

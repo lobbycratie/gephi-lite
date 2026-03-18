@@ -19,6 +19,7 @@ export const DEFAULT_SHADING_COLOR = "#ffffff";
 // Custom appearance default values
 const DEFAULT_NODE_LABEL_SIZE_ZOOM_CORRELATION = 0.8;
 const DEFAULT_NODE_LABEL_SIZE_DENSITY = 10;
+const DEFAULT_HIDE_CAPTION_LAYER = true;
 const DEFAULT_HIDDEN_PANELS = "none";
 const DEFAULT_RESTRICTED_NAVIGATION = false;
 const DEFAULT_RIGHT_PANEL_WIDTH = "25rem";
@@ -97,6 +98,7 @@ export function getCustomAppearanceState(): CustomAppearanceState {
   let hidePanels: string | null = DEFAULT_HIDDEN_PANELS;
   let restrictedNavigation: boolean = DEFAULT_RESTRICTED_NAVIGATION;
   let rightPanelWidth: string = DEFAULT_RIGHT_PANEL_WIDTH;
+  let hideCaptionLayer: boolean = DEFAULT_HIDE_CAPTION_LAYER;
 
   const url = new URL(window.location.href);
   if (url.searchParams.has(URL_PARAM_HIDE_PANELS)) {
@@ -109,6 +111,7 @@ export function getCustomAppearanceState(): CustomAppearanceState {
     rightPanelWidth = (url.searchParams.get(URL_PARAM_RIGHT_PANEL_WIDTH) || rightPanelWidth).toString();
   }
   return {
+    hideCaptionLayer: hideCaptionLayer,
     restrictedNavigation: restrictedNavigation,
     hideTopPanel: hidePanels == "top" || hidePanels == "all" ? true : false,
     hideLeftPanel: hidePanels == "left" || hidePanels == "all" ? true : false,
