@@ -29,7 +29,7 @@ function nodeCoordinates(id, attributes, index, graph) {
   var b = 1;
   var cx = 0;
   var cy = 0;
-  var rayon1 = 250; /* rayon du cercle des Pathologies */
+  var rayon1 = 400; /* rayon du cercle des Pathologies */
   var rayon2 = 600; /* rayon du cercle des Victimes */
   var centerNodeId = "A0";
 
