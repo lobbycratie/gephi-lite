@@ -20,7 +20,7 @@ function nodeCoordinates(id, attributes, index, graph) {
   function initStaticVars(instance, graph) {
     instance.staticVars = { index1: 0, index2: 0, nodesCount1: 0, nodesCount2: 0 };
     var nodes = [...graph._nodes];
-    instance.staticVars.nodesCount1 = nodes.filter(([k, v]) => v.attributes.type == "Pathologie").length;
+    instance.staticVars.nodesCount1 = nodes.filter(([k, v]) => v.attributes.type == "Pathologie").length + 12;
     instance.staticVars.nodesCount2 = nodes.filter(([k, v]) => v.attributes.type == "Victime").length;
   }
 
@@ -50,6 +50,11 @@ function nodeCoordinates(id, attributes, index, graph) {
     rayon = rayon1;
     nb = this.staticVars.nodesCount1;
     this.staticVars.index1++;
+    if (this.staticVars.index1 == 17) {
+      this.staticVars.index1 = 23;
+    } else if (this.staticVars.index1 == 55) {
+      this.staticVars.index1 = 61;
+    }
     i = this.staticVars.index1;
     a = 1;  // a = 0.7 for ellipse
   } else {
