@@ -188,6 +188,7 @@ $panel-width: $gl-sys-size-container-large;
       border-top: 1px solid var(--gl-container-border-color) !important;
 
       .panel-body,
+      .panel-body-right,
       .panel-wrapper {
         width: 100vw;
       }
@@ -205,7 +206,8 @@ $panel-width: $gl-sys-size-container-large;
       }
     }
 
-    .panel-expandable {
+    .panel-expandable,
+    .panel-expandable-right {
       &.deployed {
         width: 100vw;
         height: $menu-panel-height;
@@ -216,6 +218,7 @@ $panel-width: $gl-sys-size-container-large;
         border: 0 !important;
       }
     }
+
     .panel-expandable.panel-selection.deployed {
       height: $selection-panel-height;
     }
