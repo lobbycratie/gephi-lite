@@ -189,7 +189,7 @@ export const Initialize: FC<PropsWithChildren<unknown>> = ({ children }) => {
    * Update document title:
    */
   useEffect(() => {
-    document.title = metadata.title ? `Gephi Lite - ${metadata.title}` : "Gephi Lite";
+    document.title = metadata.title ? `Lobbycratie - ${metadata.title}` : "Lobbycratie.com";
   }, [metadata.title]);
 
   return (
