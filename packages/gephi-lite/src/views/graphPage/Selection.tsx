@@ -235,7 +235,7 @@ function SelectedItem<
           onClick={() => {
             select({ type, items: new Set(filteredGraph.neighbors(id)), replace: false });
           }} >
-          {t("Noeuds liés")}
+          {t(`selection.select_node_neighbors_button`)}
         </button>
         )}
         <button
@@ -244,7 +244,7 @@ function SelectedItem<
             if (type === "nodes") focusCameraOnNode(id);
             else focusCameraOnEdge(id);
           }} >
-          {t("Localiser")}
+          {t(`selection.locate_on_graph_button`)}
         </button>
         </div>
         <ul className="attributes-list list-unstyled small">
