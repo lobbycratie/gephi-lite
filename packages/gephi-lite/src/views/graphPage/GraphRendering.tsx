@@ -75,7 +75,7 @@ const InteractionsController: FC = () => {
 
   return (
     <div className="position-absolute d-flex flex-column sigma-controls gl-gap-1" style={{ right: 10, bottom: 10 }}>
-      {GRAPH_SELECTION_MODES.map((mode) => (
+      {!customAppearance.restrictedNavigation && GRAPH_SELECTION_MODES.map((mode) => (
         <button
           key={mode}
           className={cx("gl-btn gl-btn-icon", mode === graphSelectionMode ? "gl-btn-fill" : "gl-btn-outline bg-body")}

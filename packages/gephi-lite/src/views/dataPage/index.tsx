@@ -44,6 +44,10 @@ import { Header } from "../layout/Header";
 import { TopBar } from "./TopBar";
 import { DataTable } from "./dataTable/DataTable";
 
+import { getCustomAppearanceState } from "@gephi/gephi-lite-sdk";
+
+const customAppearance = getCustomAppearanceState();
+
 type Panel = ComponentType<{ close: () => void }>;
 
 const MENU: MenuItem<{ panel?: Panel }>[] = [
@@ -221,7 +225,7 @@ export const DataPage: FC<{ type: ItemType }> = ({ type: inputType }) => {
       </Header>
       <Layout id="data-page" className="panels-layout">
         {/* Menu panel on left*/}
-        <div className={cx("panel panel-left panel-main", (!expanded || !!selectedTool) && "panel-collapsed")}>
+        <div className={customAppearance.hideLeftPanel ? "panel-left-hidden" : cx("panel panel-left panel-main", (!expanded || !!selectedTool) && "panel-collapsed")}>
           <div className="panel-body">
             <GraphSummary />
             <GraphSearchSelection />
