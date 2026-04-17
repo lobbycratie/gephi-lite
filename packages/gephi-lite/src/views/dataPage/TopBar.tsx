@@ -28,6 +28,8 @@ import {
 import { EVENTS, useEventsContext } from "../../core/context/eventsContext";
 import { useModal } from "../../core/modals";
 
+import { getCustomAppearanceState } from "@gephi/gephi-lite-sdk";
+
 const SearchForm: FC<{ type: ItemType; input: string; onChange: (input: string) => void }> = ({
   type,
   input,
@@ -78,6 +80,7 @@ export const TopBar: FC = () => {
   const { deleteItems } = useGraphDatasetActions();
   const { type: selectionType, items } = useSelection();
   const { nodeFields, edgeFields } = useGraphDataset();
+  const customAppearance = getCustomAppearanceState();
   const matchingTypeSelectedCount = selectionType === type ? items.size : 0;
   const selectionActionDisabled = selectionType !== type || !items.size;
 
@@ -142,7 +145,7 @@ export const TopBar: FC = () => {
             >
               <OpenInGraphIcon />
             </button>
-            {(items.size === 1 || isMultiEditionPossible) && (
+            {(items.size === 1 || isMultiEditionPossible) && !customAppearance.restrictedNavigation && (
               <button
                 className="gl-btn gl-btn-icon"
                 title={t(`edition.edit_selected_${type}`, { count: items.size })}
@@ -168,6 +171,7 @@ export const TopBar: FC = () => {
                 <EditIcon />
               </button>
             )}
+            {(!customAppearance.restrictedNavigation) && (
             <button
               className="gl-btn gl-btn-icon"
               title={t(`edition.delete_selected_${type}`, { count: items.size })}
@@ -187,7 +191,7 @@ export const TopBar: FC = () => {
               }
             >
               <TrashIcon />
-            </button>
+            </button>)}
             <button
               className="gl-btn gl-btn-icon"
               title={t(`selection.unselect_all`)}
