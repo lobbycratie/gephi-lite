@@ -385,6 +385,7 @@ export const Selection: FC = () => {
           >
             <PiChecks />
           </button>
+          {!customAppearance.restrictedNavigation && (
           <button
             className="gl-btn gl-btn-icon gl-btn-outline"
             onClick={() =>
@@ -404,6 +405,7 @@ export const Selection: FC = () => {
           >
             <TrashIcon />
           </button>
+          )}
         </div>
       </div>
     </>
