@@ -33,6 +33,7 @@ import {
   useSelectionActions,
   useSigmaGraph,
   useVisualGetters,
+  useAppearance,
 } from "../../core/context/dataContexts";
 import {
   DYNAMIC_ATTRIBUTES,
@@ -97,12 +98,20 @@ function SelectedItem<
     [data.dynamic, data.static, fields, id, renderingData, t, type],
   );
   
-  let filteredAttributes = attributes;
+  // retrieves image source (if any) for thumbnail:
+  const { nodesImage } = useAppearance();
   let imageSrc;
-  if (type === "nodes") {
-    imageSrc = attributes.filter(item => item.field?.id === 'image')[0].value?.toString();
+  if (nodesImage && nodesImage.type != 'none') {
+    if (nodesImage.type == 'field') {
+      const imgAttr = attributes.find(item => item.field?.id === nodesImage.field.id)
+      imageSrc = imgAttr ? imgAttr.value?.toString() : undefined;
+    } 
+    else {
+      imageSrc = nodesImage.value;
+    }
   }
 
+  let filteredAttributes = attributes;
   const item = getItemAttributes(type, id, filteredGraph, data, graphDataset, visualGetters);
   let content: ReactNode;
   if (type === "nodes") {
@@ -226,7 +235,7 @@ function SelectedItem<
       </h4>
       <AnimateHeight height={expanded ? "auto" : 0} className="position-relative" duration={400}>
         {type === "nodes" && imageSrc && (
-        <div className="right-panel-thumbnail"><img src={imageSrc}></img></div>
+          <div className="right-panel-thumbnail"><img src={imageSrc}></img></div>
         )}
         <div className="gl-actions flex-row-reverse flex-sm-row right-panel-buttons">
         {type === "nodes" && (
