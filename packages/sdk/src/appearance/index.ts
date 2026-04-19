@@ -24,8 +24,8 @@ const DEFAULT_HIDDEN_PANELS = "none";
 const DEFAULT_RESTRICTED_NAVIGATION = false;
 const DEFAULT_RIGHT_PANEL_WIDTH = "25rem";
 const DEFAULT_HIDE_ATTRIBUTES = true;
-const DEFAULT_HIDDEN_NODE_ATTRIBUTES = [ "ID", "name", "size", "image", "color", "x", "y", "label", "nodesize" ];
-const DEFAULT_HIDDEN_EDGE_ATTRIBUTES = [ "ID", "weight", "selfLoop", "directed" ];
+const DEFAULT_HIDDEN_NODE_ATTRIBUTES = [ "ID", "Name", "Size", "Image", "color", "x", "y", "Label", "NodeSize" ];
+const DEFAULT_HIDDEN_EDGE_ATTRIBUTES = [ "ID", "Weight", "selfLoop", "directed" ];
 
 const URL_PARAM_HIDE_PANELS = "hp";
 const URL_PARAM_RESTRICTED_NAVIGATION = "rn";

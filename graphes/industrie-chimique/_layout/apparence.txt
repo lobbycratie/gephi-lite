@@ -1,21 +1,23 @@
 Titre : Comment l'industrie chimique a empoisonné le monde
 
-! remplacer le type des colonnes "Text" : url -> text
+! Pour nodes et edges, remplacer le type des colonnes "Text" : url -> text
 
 Apparence
 - Noeuds :
   Colors
     Pathologie : D0021B
     Victime : 6ABD0F
-  Size : nodesize
-  Images : image
+  Size : NodeSize
+  Images : Image
 
 - Liens :
   Couleur pour tous les liens : CCCCCC
   Taille :
   
 - Libellés
-  Noeuds : Taille fixe : 14
+  Noeuds 
+    Libellé : Label
+    Taille fixe : 14
   Liens  : Pas de libellé
 
 
