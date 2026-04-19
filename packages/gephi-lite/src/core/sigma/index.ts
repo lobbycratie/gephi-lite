@@ -253,3 +253,74 @@ export function focusCameraOnEdge(id: string) {
     focusTimeOutId = null;
   }, HIGHLIGHT_DURATION);
 }
+
+
+
+export function focusCameraOnNodes(ids: Set<string>) {
+
+  if (ids === undefined || ids.size == 0) return;
+  if (ids.size == 1) {
+    return focusCameraOnNode(ids.values().toArray()[0]);
+  }
+
+  if (focusTimeOutId) clearTimeout(focusTimeOutId);
+  sigmaActions.resetHighlightedNodes();
+
+  const sigma = sigmaAtom.get();
+  const graphDimensions = sigma.getGraphDimensions();
+
+  const xDispValues: number[] = [], yDispValues: number[] = [];
+  const xValues: number[] = [], yValues: number[] = [];
+  let margin: number = 0;
+  let animate: boolean = false;
+  ids.forEach((id) => {
+    const nodeDisplayData = sigma.getNodeDisplayData(id);
+    const nodeData = sigma.getGraph().getNodeAttributes(id);
+    if (nodeDisplayData && nodeData) {
+      animate = true;
+      xDispValues.push(nodeDisplayData.x);
+      yDispValues.push(nodeDisplayData.y);
+      xValues.push(nodeData.x);
+      yValues.push(nodeData.y);
+      margin = max([margin, nodeDisplayData?.size, 10]) as number;
+    }
+  });
+
+  const xDispMin = Math.min(...xDispValues);
+  const xDispMax = Math.max(...xDispValues);
+  const yDispMin = Math.min(...yDispValues);
+  const yDispMax = Math.max(...yDispValues);
+
+  const xMin = Math.min(...xValues);
+  const xMax = Math.max(...xValues);
+  const yMin = Math.min(...yValues);
+  const yMax = Math.max(...yValues);
+
+  animate = animate && (xDispMin != Infinity) && (xDispMax-xDispMin != 0) && (yDispMax-yDispMin != 0);
+
+  if (animate) {
+
+    // we compute the zoom ratio (in the graph ref, which should be the same in the viewport)
+    const focusWidth = Math.abs(xMax - xMin) + margin * 2;
+    const focusHeight = Math.abs(yMax - yMin) + margin * 2;
+    const focusRatio = max([focusHeight / graphDimensions.height, focusWidth / graphDimensions.width]) as number;
+  
+    sigma.getCamera().animate(
+      {
+        x: (xDispMax + xDispMin) / 2,
+        y: (yDispMax + yDispMin) / 2,
+        // we zoom to see a box of X times the size of the node
+        ratio: focusRatio,
+      },
+      { duration: ANIMATION_DURATION },
+    );
+  }
+
+  // Higlight nodes during X seconds
+  sigmaActions.setHighlightedNodes(new Set(ids));
+  focusTimeOutId = window.setTimeout(() => {
+    sigmaActions.resetHighlightedNodes();
+    focusTimeOutId = null;
+  }, HIGHLIGHT_DURATION);
+}
+

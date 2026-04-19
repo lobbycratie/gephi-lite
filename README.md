@@ -154,8 +154,14 @@ Hide some features or elements for better readability (especially for other web 
 - Hide some node and edge attributes in right panel for better readability 
 - Hide left and / or Top panels
 
+## New packages:
+```
+> npm install react-markdown
+> npm install remark-gfm
+```
+
 ## Url query parameters:
-Sample uri: http://localhost:5173/gephi-lite/?hp=left&rn=true&rpw=25rem
+Sample uri: http://localhost:5173/graphes/?hp=left&rn=true&rpw=25rem
 
 ### Hide left and top panels:  
 ``hp="top"|"left"|"all"|"none"``  

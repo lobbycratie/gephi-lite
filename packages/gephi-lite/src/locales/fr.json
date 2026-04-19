@@ -958,7 +958,8 @@
     "visible_nodes_one": "<strong>Un</strong> nœud sélectionné visible",
     "visible_nodes_zero": "<strong>Aucun</strong> nœud sélectionné visible",
     "visible_one": "un visible",
-    "visible_zero": "aucun visible"
+    "visible_zero": "aucun visible",
+    "tooltip_link_button": "Touche Ctrl pour ajouter à la sélection"
   },
   "settings": {
     "danger-zone": {

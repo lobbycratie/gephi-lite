@@ -269,7 +269,7 @@ function SelectedItem<
               <span className="text-break">
                 {!isNil(attribute.value) ? (
                   attribute.field ? (
-                    <RenderItemAttribute value={attribute.value} field={attribute.field} />
+                    <RenderItemAttribute value={attribute.value} field={attribute.field} textRenderType="markdown" />
                   ) : (
                     <RenderText value={attribute.value + ""} />
                   )

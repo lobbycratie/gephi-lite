@@ -20,7 +20,7 @@ export const ReadDataCell = forwardRef<
       title={!isNil(value) ? value + "" : undefined}
       onClick={onClick}
     >
-      <RenderItemAttribute value={value} field={field} />
+      <RenderItemAttribute value={value} field={field} textRenderType={'none'} />
     </span>
   );
 });

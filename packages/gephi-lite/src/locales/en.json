@@ -739,7 +739,8 @@
     "visible_edges_zero": "No visible selected edge",
     "visible_nodes": "{{count, number}} visible selected nodes",
     "visible_nodes_one": "One visible selected node",
-    "visible_nodes_zero": "No visible selected node"
+    "visible_nodes_zero": "No visible selected node",
+    "tooltip_link_button": "Press Ctrl key for add node to selection"
   },
   "settings": {
     "danger-zone": {

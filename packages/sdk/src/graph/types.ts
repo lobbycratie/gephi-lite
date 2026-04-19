@@ -126,6 +126,8 @@ export type FieldModelWithStats<T extends ItemType = ItemType> = FieldModel<T> &
 
 export type ModelValueType = FieldModelAbstraction[FieldModelType]["expectedOutput"] | undefined;
 
+export type TextRenderType = 'none' | 'linkify' | 'markdown';
+
 /**
  * GRAPHS:
  * *******

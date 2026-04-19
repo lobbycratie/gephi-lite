@@ -7,6 +7,7 @@ import {
   ItemType,
   ModelValueType,
   Scalar,
+  TextRenderType,
 } from "@gephi/gephi-lite-sdk";
 import { isNil } from "lodash";
 import { DateTime } from "luxon";
@@ -25,6 +26,10 @@ import MessageTooltip from "../MessageTooltip";
 import { FieldModelIcon, InvalidDataIcon } from "../common-icons";
 import { Checkbox } from "../forms/Checkbox";
 import { CreatableSelect, StringOption, optionize } from "../forms/Select";
+
+import ReactMarkdown from "react-markdown"; 
+import remarkGfm from 'remark-gfm'
+import { CustomMarkdownComponent } from "../../utils/markdown";
 
 /**
  * Render values:
@@ -46,14 +51,16 @@ export const InvalidAttributeRenderer: FC<{ value: Scalar; expectedType: FieldMo
     </span>
   );
 };
+
 export const AttributeRenderers: {
   [K in keyof FieldModelAbstraction]: FC<
     {
       value?: FieldModelAbstraction[K]["expectedOutput"];
+      textRenderType?: TextRenderType;
     } & FieldModelAbstraction[K]["options"]
   >;
 } = {
-  text: ({ value }) => (!isNil(value) ? <ReactLinkify {...DEFAULT_LINKIFY_PROPS}>{value}</ReactLinkify> : null),
+  text: ({ value, textRenderType }) => TextAttributeRenderer(value, textRenderType),
   url: ({ value }) =>
     !isNil(value) ? (
       <a href={value} target="_blank" rel="noreferrer" title={value}>
@@ -88,6 +95,15 @@ export const AttributeRenderers: {
       </span>
     ) : null,
 };
+
+const TextAttributeRenderer = ( value?: string, renderType?: TextRenderType ) => {
+  return (!isNil(value) ? (
+    !renderType || renderType == 'none' ? ( <>{value}</> ) : 
+      renderType == 'linkify' ? ( <ReactLinkify { ...DEFAULT_LINKIFY_PROPS }>{value}</ReactLinkify> ) :
+      ( <ReactMarkdown components={CustomMarkdownComponent} remarkPlugins={[remarkGfm]}>{value}</ReactMarkdown> )
+  ) : null)
+}
+
 export const RenderText = AttributeRenderers.text;
 export const RenderNumber = AttributeRenderers.number;
 export const RenderBoolean = AttributeRenderers.boolean;
@@ -96,12 +112,12 @@ export const RenderKeywords = AttributeRenderers.keywords;
 export const RenderDate = AttributeRenderers.date;
 export const RenderColor = AttributeRenderers.color;
 
-export const RenderItemAttribute: FC<{ field: FieldModelTypeSpec; value: Scalar }> = ({ field, value }) => {
+export const RenderItemAttribute: FC<{ field: FieldModelTypeSpec; value: Scalar; textRenderType?: TextRenderType }> = ({ field, value, textRenderType }) => {
   const castValue = castScalarToModelValue(value, field);
-  const AttributeRenderer = AttributeRenderers[field.type] as FC<{ value?: ModelValueType }>;
+  const AttributeRenderer = AttributeRenderers[field.type] as FC<{ value?: ModelValueType; textRenderType?: TextRenderType }>;
 
   if (!isNil(value) && isNil(castValue)) return <InvalidAttributeRenderer value={value} expectedType={field.type} />;
-  return <AttributeRenderer {...field} value={castValue} />;
+  return <AttributeRenderer {...field} value={castValue} textRenderType={textRenderType} />;
 };
 
 /**
