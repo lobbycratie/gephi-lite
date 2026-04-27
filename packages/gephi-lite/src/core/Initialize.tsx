@@ -23,6 +23,8 @@ import { getEmptySession, parseSession } from "./session/utils";
 import { resetCamera } from "./sigma";
 import { AuthInit } from "./user/AuthInit";
 
+import { validateGraphFileUrl } from "@gephi/gephi-lite-sdk";
+
 // This awful flag helps to deal with the double rendering caused from
 // React.StrictMode:
 // https://react.dev/reference/react/StrictMode#fixing-bugs-found-by-double-rendering-in-development
@@ -107,20 +109,28 @@ export const Initialize: FC<PropsWithChildren<unknown>> = ({ children }) => {
         notify({ type: "warning", message: t("error.deprecated.gexf_search_params") });
 
       const file = url.searchParams.get("file") || url.searchParams.get("gexf") || "";
-
-      try {
-        await open({
-          type: "remote",
-          filename: extractFilename(file),
-          url: file,
-        });
-        graphFound = true;
-        showWelcomeModal = false;
-        // remove param in url
-        url.searchParams.delete("file");
-        window.history.pushState({}, "", url);
-      } catch (e) {
-        console.error(e);
+      if (validateGraphFileUrl(file)) {
+        try {
+          await open({
+            type: "remote",
+            filename: extractFilename(file),
+            url: file,
+          });
+          graphFound = true;
+          showWelcomeModal = false;
+          // remove param in url
+          url.searchParams.delete("file");
+          window.history.pushState({}, "", url);
+        } catch (e) {
+          console.error(e);
+          notify({
+            type: "error",
+            message: t("graph.open.remote.error"),
+            title: t("gephi-lite.title"),
+          });
+        }
+      } else {
+        resetGraph();
         notify({
           type: "error",
           message: t("graph.open.remote.error"),

@@ -16,8 +16,9 @@ export const CustomMarkdownComponent = {
     <li style={{ lineHeight: "0.8" }} {...props} />
   ),
   a: ({ ...props }) => {
-    if (props.href && props.href.startsWith(NODE_LINK_PREFIX)) {
-      const nodeId = props.href.replace(NODE_LINK_PREFIX, '');
+    const test = props.href?.replace(/\s/g, "").toLowerCase().startsWith(NODE_LINK_PREFIX);
+    if (test) {
+      const nodeId = props.href.substring(props.href.indexOf('=')+1).trim();
       return ( <MarkdownNodeLink title={props.children} node={nodeId}/> )
     }
     else {

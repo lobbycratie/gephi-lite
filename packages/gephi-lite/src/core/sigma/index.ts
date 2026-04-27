@@ -181,7 +181,8 @@ export const sigmaActions = {
 const ANIMATION_DURATION = 500;
 const HIGHLIGHT_DURATION = 2000;
 let focusTimeOutId: number | null = null;
-export function focusCameraOnNode(id: string) {
+
+export function focusCameraOnNode(id: string, disableRatio?: boolean) {
   if (focusTimeOutId) clearTimeout(focusTimeOutId);
   sigmaActions.resetHighlightedNodes();
 
@@ -194,7 +195,7 @@ export function focusCameraOnNode(id: string) {
         x: nodeDisplayData.x,
         y: nodeDisplayData.y,
         // we zoom to see a box of X times the size of the node
-        ratio: max([
+        ratio: disableRatio ? undefined : max([
           (nodeDisplayData.size * 10) / graphDimensions.width,
           (nodeDisplayData.size * 10) / graphDimensions.height,
         ]) as number,
@@ -260,7 +261,7 @@ export function focusCameraOnNodes(ids: Set<string>) {
 
   if (ids === undefined || ids.size == 0) return;
   if (ids.size == 1) {
-    return focusCameraOnNode(ids.values().toArray()[0]);
+    return focusCameraOnNode(ids.values().toArray()[0], true);
   }
 
   if (focusTimeOutId) clearTimeout(focusTimeOutId);
