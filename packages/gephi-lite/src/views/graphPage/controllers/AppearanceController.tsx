@@ -112,6 +112,11 @@ export const AppearanceController: FC = () => {
                   : memoizedBrighten(res.color || DEFAULT_EDGE_COLOR);
               res.zIndex = -1;
             }
+            if (hasEmphasizedEdges && allEmphasizedEdges.has(id)) {
+              res.size = res.size ? DEFAULT_HOVERED_EDGE_SIZE_COEF * res.size: res.size;
+              res.color = DEFAULT_HOVERED_EDGE_COLOR;
+              //res.zIndex = 1000;
+            }
 
             if (id == hoveredEdge /* && (selection.type !== "nodes" || selection.items.size === 0) */ ) {
               res.color = DEFAULT_HOVERED_EDGE_COLOR;

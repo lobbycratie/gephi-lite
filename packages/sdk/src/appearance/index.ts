@@ -6,7 +6,7 @@ export * from "./types";
 
 export const DEFAULT_NODE_COLOR = "#999999";
 export const DEFAULT_EDGE_COLOR = "#cccccc";
-export const DEFAULT_HOVERED_EDGE_COLOR = "#363434";
+export const DEFAULT_HOVERED_EDGE_COLOR = "red";
 export const DEFAULT_HOVERED_EDGE_SIZE_COEF = 1.3;
 export const DEFAULT_NODE_SIZE = 20;
 export const DEFAULT_EDGE_SIZE = 6;
